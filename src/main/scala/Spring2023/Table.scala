@@ -11,7 +11,9 @@ case class Table[T](xs: List[T]) {
    *
    * @return the size of this Table.
    */
-  def size: Int = /** SOLUTION END */ ???
+  def size: Int = xs.size
+
+  /** SOLUTION END */
 
   /**
    * Method to do a filter on T, given a predicate of type P=>Boolean, and by using a "lens" function of type T=>P.
@@ -23,7 +25,10 @@ case class Table[T](xs: List[T]) {
    * @tparam P the underlying type of the predicate.
    * @return a new Table[T] with only the matching rows.
    */
-  def lensFilter[P](p: P => Boolean)(lens: T => P): Table[T] = /** SOLUTION END */ ???
+  def lensFilter[P](p: P => Boolean)(lens: T => P): Table[T] = Table(xs.filter(p compose lens))
+
+  /** SOLUTION END */
+
 
   /**
    * Method to do a filter on T given a predicate of type T=>Boolean.
@@ -35,7 +40,9 @@ case class Table[T](xs: List[T]) {
    * @param p the predicate of type T => Boolean
    * @return a new Table[T] with only the matching rows.
    */
-  def filter(p: T => Boolean): Table[T] = /** SOLUTION END */ ???
+  def filter(p: T => Boolean): Table[T] = Table(xs.filter(p))
+
+  /** SOLUTION END */
 
   /**
    * Method to sample the Table and return a Table which is typically a lot smaller.
@@ -50,7 +57,12 @@ case class Table[T](xs: List[T]) {
    * @param r a Random number generator.
    * @return a new Table[T].
    */
-  def sample(n: Int)(implicit r: Random): Table[T] = /** SOLUTION END */ ???
+  def sample(n: Int)(implicit r: Random): Table[T] = {
+    val xs1 = xs.filter(_ => r.nextInt(n) == 0)
+    Table(xs1)
+  }
+
+  /** SOLUTION END */
 
   /**
    * This is a bit harder. In order to make this work, you will have to understand implicits.
@@ -63,11 +75,12 @@ case class Table[T](xs: List[T]) {
    *
    * @return a Double.
    */
-  def sum(implicit ev: Numeric[T]): Double = {
-    /** SOLUTION */
-    ???
-    /** SHOW ??? END */
-  }
+  def sum(implicit ev: Numeric[T]): Double = ???
+
+  /** SOLUTION */
+
+  /** SHOW ??? END */
+
 }
 
 object Table {
@@ -82,7 +95,10 @@ object Table {
    * @tparam T the underlying type of xs and the resulting Table.
    * @return a Table[T].
    */
-  def apply[T](xs: LazyList[T]): Table[T] = /** SOLUTION END */ ???
+  def apply[T](xs: LazyList[T]): Table[T] = {
+    val xs1 = xs.toList
+    Table(xs1)
+  }/** SOLUTION END */
 
   /**
    * Object method to build a Table[T] from a variable number of T parameters.
@@ -93,5 +109,9 @@ object Table {
    * @tparam T the underlying type of xs and the resulting Table.
    * @return a Table[T].
    */
-  def apply[T](xs: T*): Table[T] = /** SOLUTION END */ ???
+  def apply[T](xs: T*): Table[T] = {
+    Table(xs.toList)
+  }
+
+  /** SOLUTION END */
 }
